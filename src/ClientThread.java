@@ -35,7 +35,6 @@ public class ClientThread extends Logger implements Runnable {
         return socket.getInetAddress().toString();
     }
 
-
     @Override
     public void run() {
         while(running){

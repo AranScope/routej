@@ -11,9 +11,7 @@ public class TestServer extends Server {
         log("Message from " + client.getAddress() + ": " + message);
 
         for(ClientThread c: getClients()){
-            if(client != c){
-                c.send(message);
-            }
+            c.send(message);
         }
 
         if(message.equals("list")){
