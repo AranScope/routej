@@ -11,7 +11,7 @@ public class TestServer extends Server {
 
         while(true){
             String input = sc.nextLine();
-
+            log("Command entered");
             switch (input) {
                 case "who":
                     String resp = "";
