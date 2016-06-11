@@ -49,6 +49,8 @@ public abstract class Client implements Runnable{
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
 
+            output.writeUTF(name);
+
         }catch(IOException ex){
             System.err.println("Client: Failed to connect to server.");
             System.exit(0);

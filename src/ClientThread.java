@@ -5,11 +5,11 @@ import java.net.Socket;
  * Server thread class. One created per client.
  */
 public class ClientThread extends Logger implements Runnable {
-
     private Socket socket;
     private DataOutputStream output;
     private DataInputStream input;
     private Server server;
+    private String name = "";
     private boolean running = true;
 
     /**
@@ -24,6 +24,7 @@ public class ClientThread extends Logger implements Runnable {
         try {
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
+            name = input.readUTF();
         } catch (IOException ex) {
             elog("ClientThread: Could not retrieve input stream from socket.");
             server.onClientDisconnect(this);
@@ -33,6 +34,10 @@ public class ClientThread extends Logger implements Runnable {
 
     public String getAddress(){
         return socket.getInetAddress().toString();
+    }
+
+    public String getName(){
+        return name;
     }
 
     @Override

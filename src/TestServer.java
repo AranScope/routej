@@ -20,10 +20,8 @@ public class TestServer extends Server {
                     log(clients);
                     break;
                 case "help":
-                    String ref = "'who' - See the list of connected users.\n" +
-                                  "'kick 'user' - Kick a user from the server.\n";
-
-                    log(ref);
+                    log("'who' - See the list of connected users.");
+                    log("'kick 'user' - Kick a user from the server.");
                     break;
             }
         }
@@ -31,16 +29,16 @@ public class TestServer extends Server {
 
     @Override
     void onMessageReceived(ClientThread client, String message) {
-        log("Message from " + client.getAddress() + ": " + message);
+        log("Message from " + client.getName() + ": " + message);
 
         for(ClientThread c: getClients()){
-            c.send(message);
+            c.send(client.getName() + ": " + message);
         }
 
         if(message.equals("list")){
             String clients = "";
             for(ClientThread c: getClients()){
-                clients += c.getAddress() + ",";
+                clients += c.getName() + ",";
             }
             client.send(clients);
         }
@@ -48,12 +46,12 @@ public class TestServer extends Server {
 
     @Override
     void onClientConnect(ClientThread client) {
-        log("Client connected with address: " + client.getAddress());
+        log("Client " + client.getName() + " connected with address: " + client.getAddress());
     }
 
     @Override
     void onClientDisconnect(ClientThread client) {
-        log("Client disconnected with address: " + client.getAddress());
+        log("Client " + client.getName() + " disconnected with address: " + client.getAddress());
     }
 
     @Override
