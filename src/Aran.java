@@ -4,7 +4,6 @@ public class Aran extends Client {
 
     public Aran(String name, String address, int port) {
         super(name, address, port);
-
         Scanner sc = new Scanner(System.in);
 
         while(true){
