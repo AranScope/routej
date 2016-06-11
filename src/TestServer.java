@@ -32,7 +32,9 @@ public class TestServer extends Server {
         log("Message from " + client.getName() + ": " + message);
 
         for(ClientThread c: getClients()){
-            c.send(client.getName() + ": " + message);
+            if(client != c){
+                c.send(client.getName() + ": " + message);
+            }
         }
 
         if(message.equals("list")){
