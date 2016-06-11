@@ -66,4 +66,9 @@ public class ClientThread extends Logger implements Runnable {
 
         return inputString;
     }
+
+    @Override
+    public boolean equals(Object o){
+        return false;
+    }
 }
