@@ -6,7 +6,7 @@ import java.util.LinkedList;
 /**
  * Abstract server representation for string messaging.
  */
-public abstract class Server extends Logger {
+public abstract class Server extends Logger implements Runnable{
     boolean running = true;
     private LinkedList<ClientThread> clients;
     private int port;
@@ -50,7 +50,14 @@ public abstract class Server extends Logger {
     public Server(int port){
         this.port = port;
         clients = new LinkedList<>();
+        new Thread(this).start();
+    }
 
+    /**
+     * Listen for messages, send events to clients.
+     */
+    @Override
+    public void run(){
         ServerSocket s = null;
 
         try{
