@@ -15,7 +15,7 @@ public class TestServer extends Server {
                 case "who":
                     String clients = "";
                     for (ClientThread thread : getClients()) {
-                        clients += thread.getAddress();
+                        clients += thread.getName();
                     }
                     log(clients);
                     break;

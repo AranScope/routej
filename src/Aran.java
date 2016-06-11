@@ -7,6 +7,7 @@ public class Aran extends Client {
         Scanner sc = new Scanner(System.in);
 
         while(true){
+            System.out.print("Enter message: ");
             String input = sc.nextLine();
             send(input);
         }
@@ -25,7 +26,7 @@ public class Aran extends Client {
 
     @Override
     void onMessageReceived(String message) {
-        System.out.println("Message: " + message);
+        System.out.println(message);
     }
 
     /**
