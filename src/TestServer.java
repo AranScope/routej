@@ -1,9 +1,27 @@
+import java.util.Scanner;
+
 /**
  * Test implementation of server.
  */
 public class TestServer extends Server {
     public TestServer(int port) {
         super(port);
+
+        Scanner sc = new Scanner(System.in);
+
+        while(true){
+            String input = sc.nextLine();
+
+            switch (input) {
+                case "who":
+                    String resp = "";
+                    for (ClientThread thread : getClients()) {
+                        resp += thread.getAddress();
+                    }
+                    log(resp);
+                    break;
+            }
+        }
     }
 
     @Override
