@@ -1,14 +1,20 @@
 /**
  * Test implementation of server.
  */
-public class GameServer extends Server {
-    public GameServer(int port) {
+public class TestServer extends Server {
+    public TestServer(int port) {
         super(port);
     }
 
     @Override
     void onMessageReceived(ClientThread client, String message) {
         log("Message from " + client.getAddress() + ": " + message);
+
+        for(ClientThread c: getClients()){
+            if(client != c){
+                c.send(message);
+            }
+        }
 
         if(message.equals("list")){
             String clients = "";
@@ -44,6 +50,6 @@ public class GameServer extends Server {
      * @param args
      */
     public static void main(String[] args){
-        new GameServer(Integer.parseInt(args[0]));
+        new TestServer(Integer.parseInt(args[0]));
     }
 }
