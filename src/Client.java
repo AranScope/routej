@@ -49,11 +49,6 @@ public abstract class Client implements Runnable{
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
 
-            try{
-                Thread.sleep(100);
-            }catch(Exception e){
-
-            }
             send(name);
 
         }catch(IOException ex){
