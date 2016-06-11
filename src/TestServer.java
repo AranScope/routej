@@ -11,14 +11,19 @@ public class TestServer extends Server {
 
         while(true){
             String input = sc.nextLine();
-            log("Command entered");
             switch (input) {
                 case "who":
-                    String resp = "";
+                    String clients = "";
                     for (ClientThread thread : getClients()) {
-                        resp += thread.getAddress();
+                        clients += thread.getAddress();
                     }
-                    log(resp);
+                    log(clients);
+                    break;
+                case "help":
+                    String ref = "'who' - See the list of connected users.\n" +
+                                  "'kick 'user' - Kick a user from the server.\n";
+
+                    log(ref);
                     break;
             }
         }
@@ -54,6 +59,7 @@ public class TestServer extends Server {
     @Override
     void onStart() {
         log("Server running on port " + getPort());
+        log("Type 'help' for the command reference");
     }
 
     @Override
