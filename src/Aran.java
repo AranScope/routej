@@ -7,7 +7,6 @@ public class Aran extends Client {
         Scanner sc = new Scanner(System.in);
 
         while(true){
-            System.out.print("Enter username: ");
             String input = sc.nextLine();
             send(input);
         }
