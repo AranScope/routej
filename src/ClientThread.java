@@ -32,6 +32,11 @@ public class ClientThread extends Logger implements Runnable {
         }
     }
 
+    //trx
+    public boolean isRunning(){
+        return running;
+    }
+
     public String getAddress(){
         return socket.getInetAddress().toString();
     }
@@ -51,6 +56,7 @@ public class ClientThread extends Logger implements Runnable {
     public void send(Object obj){
         try {
             output.writeObject(obj);
+            output.flush();
         }catch(IOException ex){
             server.getClients().remove(this);
             server.onClientDisconnect(this);

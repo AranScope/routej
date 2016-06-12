@@ -72,9 +72,11 @@ public abstract class Server extends Logger implements Runnable{
             try {
                 Socket clientSocket = s.accept();
                 ClientThread client = new ClientThread(clientSocket, this);
-                clients.add(client);
-                onClientConnect(client);
-                new Thread(client).start();
+                if(client.isRunning()) {
+                    clients.add(client);
+                    onClientConnect(client);
+                    new Thread(client).start();
+                }
 
             }catch(IOException ex){
                 elog("Server: Server socket error on client connect");

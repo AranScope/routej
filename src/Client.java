@@ -62,6 +62,7 @@ public abstract class Client implements Runnable{
     public void send(Object obj){
         try {
             output.writeObject(obj);
+            output.flush();
         }catch(IOException ex){
             System.err.println("Client: Disconnected from server.");
             onDisconnect();
@@ -75,7 +76,7 @@ public abstract class Client implements Runnable{
     public void run(){
         do{
             try {
-                Object obj= input.readObject();
+                Object obj = input.readObject();
                 onMessageReceived(obj);
             }catch(Exception ex){
                 System.err.println("Client: Disconnected from server.");
