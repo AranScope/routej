@@ -11,7 +11,7 @@ public abstract class Server extends Logger implements Runnable{
     private LinkedList<ClientThread> clients;
     private int port;
 
-    abstract void onMessageReceived(ClientThread client, String message);
+    abstract void onMessageReceived(ClientThread client, Object obj);
     abstract void onClientConnect(ClientThread client);
     abstract void onClientDisconnect(ClientThread client);
     abstract void onStart();

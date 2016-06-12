@@ -28,7 +28,8 @@ public class TestServer extends Server {
     }
 
     @Override
-    void onMessageReceived(ClientThread client, String message) {
+    void onMessageReceived(ClientThread client, Object obj) {
+        String message = (String) obj;
         log("Message from " + client.getName() + ": " + message);
 
         for(ClientThread c: getClients()){
@@ -64,7 +65,8 @@ public class TestServer extends Server {
 
     @Override
     void onStop() {
-
+        log("Server stopping...");
+        System.exit(0);
     }
 
     /**

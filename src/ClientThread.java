@@ -6,8 +6,8 @@ import java.net.Socket;
  */
 public class ClientThread extends Logger implements Runnable {
     private Socket socket;
-    private DataOutputStream output;
-    private DataInputStream input;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
     private Server server;
     private String name = "";
     private boolean running = true;
@@ -22,8 +22,8 @@ public class ClientThread extends Logger implements Runnable {
         this.server = server;
 
         try {
-            output = new DataOutputStream(socket.getOutputStream());
-            input = new DataInputStream(socket.getInputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());
             name = input.readUTF();
         } catch (IOException ex) {
             elog("ClientThread: Could not retrieve input stream from socket.");
@@ -43,14 +43,14 @@ public class ClientThread extends Logger implements Runnable {
     @Override
     public void run() {
         while(running){
-            String inputString = read();
-            if(inputString != null) server.onMessageReceived(this, inputString);
+            Object inputObject = read();
+            if(inputObject != null) server.onMessageReceived(this, inputObject);
         }
     }
 
-    public void send(String string){
+    public void send(Object obj){
         try {
-            output.writeUTF(string);
+            output.writeObject(obj);
         }catch(IOException ex){
             server.getClients().remove(this);
             server.onClientDisconnect(this);
@@ -58,17 +58,17 @@ public class ClientThread extends Logger implements Runnable {
         }
     }
 
-    private String read(){
-        String inputString = null;
+    private Object read(){
+        Object inputObject = null;
 
         try{
-            inputString = input.readUTF();
-        }catch(IOException ex){
+            inputObject = input.readObject();
+        }catch(Exception ex){
             server.onClientDisconnect(this);
             running = false;
         }
 
-        return inputString;
+        return inputObject;
     }
 
     @Override

@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -12,13 +10,13 @@ public abstract class Client implements Runnable{
     public int port;
 
     private Socket socket;
-    private DataOutputStream output;
-    private DataInputStream input;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
     private boolean running = true;
 
     abstract void onConnect();
     abstract void onDisconnect();
-    abstract void onMessageReceived(String message);
+    abstract void onMessageReceived(Object obj);
 
     /**
      * Construct a new client.
@@ -46,8 +44,8 @@ public abstract class Client implements Runnable{
         try {
             socket = new Socket(address, port);
 
-            output = new DataOutputStream(socket.getOutputStream());
-            input = new DataInputStream(socket.getInputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());
 
             send(name);
 
@@ -59,11 +57,11 @@ public abstract class Client implements Runnable{
 
     /**
      * Send a message to the server.
-     * @param string
+     * @param obj
      */
-    public void send(String string){
+    public void send(Object obj){
         try {
-            output.writeUTF(string);
+            output.writeObject(obj);
         }catch(IOException ex){
             System.err.println("Client: Disconnected from server.");
             onDisconnect();
@@ -77,9 +75,9 @@ public abstract class Client implements Runnable{
     public void run(){
         do{
             try {
-                String message = input.readUTF();
-                onMessageReceived(message);
-            }catch(IOException ex){
+                Object obj= input.readObject();
+                onMessageReceived(obj);
+            }catch(Exception ex){
                 System.err.println("Client: Disconnected from server.");
                 onDisconnect();
             }

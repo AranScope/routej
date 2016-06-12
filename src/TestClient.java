@@ -1,13 +1,12 @@
 import java.util.Scanner;
 
-public class Aran extends Client {
+public class TestClient extends Client {
 
-    public Aran(String name, String address, int port) {
+    public TestClient(String name, String address, int port) {
         super(name, address, port);
         Scanner sc = new Scanner(System.in);
 
         while(true){
-            System.out.print("Enter message: ");
             String input = sc.nextLine();
             send(input);
         }
@@ -25,7 +24,8 @@ public class Aran extends Client {
     }
 
     @Override
-    void onMessageReceived(String message) {
+    void onMessageReceived(Object obj) {
+        String message = (String) obj;
         System.out.println(message);
     }
 
@@ -36,6 +36,6 @@ public class Aran extends Client {
      * @param args
      */
     public static void main(String[] args){
-        new Aran(args[0], args[1], Integer.parseInt(args[2]));
+        new TestClient(args[0], args[1], Integer.parseInt(args[2]));
     }
 }
