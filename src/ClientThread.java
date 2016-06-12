@@ -53,9 +53,6 @@ public class ClientThread extends Logger implements Runnable {
             if(inputObject != null){
                 server.onMessageReceived(this, inputObject);
             }
-            else{
-                elog("Null message");
-            }
         }
     }
 
