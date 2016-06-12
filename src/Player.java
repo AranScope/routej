@@ -56,6 +56,12 @@ public class Player extends Client implements Serializable, Runnable{
         while(true) {
             x = MouseInfo.getPointerInfo().getLocation().x;
             y = MouseInfo.getPointerInfo().getLocation().y;
+            send(this);
+            try{
+                Thread.sleep(20);
+            }catch(Exception e){
+
+            }
         }
     }
 }
