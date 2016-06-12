@@ -24,6 +24,14 @@ public class Player extends Client implements Serializable, Runnable{
         new Thread(this).start();
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public Point getLocation(){
+        return new Point(x, y);
+    }
+
     public void draw(Graphics2D g2){
         g2.setColor(Color.decode("0xbada55"));
         this.g2 = g2;

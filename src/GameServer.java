@@ -5,6 +5,8 @@ public class GameServer extends Server {
 
     @Override
     void onMessageReceived(ClientThread client, Object obj) {
+        Player p = (Player) obj;
+        log(p.getName() + " is at " + p.getLocation());
         for(ClientThread c: getClients()){
             if(client != c){
                 c.send(obj);
