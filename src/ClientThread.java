@@ -24,8 +24,8 @@ public class ClientThread extends Logger implements Runnable {
         try {
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
-            name = input.readUTF();
-        } catch (IOException ex) {
+            name = (String) input.readObject();
+        } catch (Exception ex) {
             ex.printStackTrace();
             elog("ClientThread: Could not retrieve input stream from socket.");
             server.onClientDisconnect(this);
