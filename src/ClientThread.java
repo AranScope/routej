@@ -50,7 +50,12 @@ public class ClientThread extends Logger implements Runnable {
     public void run() {
         while(running){
             Object inputObject = read();
-            if(inputObject != null) server.onMessageReceived(this, inputObject);
+            if(inputObject != null){
+                server.onMessageReceived(this, inputObject);
+            }
+            else{
+                elog("Null message");
+            }
         }
     }
 
