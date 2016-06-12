@@ -47,6 +47,7 @@ public class Player extends Client implements Serializable, Runnable{
     @Override
     void onMessageReceived(Object obj) {
         Player p = (Player) obj;
+        System.out.println("Player object received.");
         p.draw(g2);
     }
 
@@ -55,7 +56,6 @@ public class Player extends Client implements Serializable, Runnable{
         while(true) {
             x = MouseInfo.getPointerInfo().getLocation().x;
             y = MouseInfo.getPointerInfo().getLocation().y;
-            System.out.println(x + "," + y);
         }
     }
 }
