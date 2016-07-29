@@ -2,13 +2,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Optional;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Abstract server representation for string messaging.
+ * Abstract server representation for object messaging.
  */
 public abstract class Server extends Logger implements Runnable{
     boolean running = true;
-    private LinkedList<ClientThread> clients;
+    private LinkedBlockingQueue<ClientThread> clients;
     private int port;
 
     abstract void onMessageReceived(ClientThread client, Object obj);
@@ -29,7 +31,7 @@ public abstract class Server extends Logger implements Runnable{
      * Get a list of all connected clients.
      * @return List of connected clients.
      */
-    public LinkedList<ClientThread> getClients(){
+    public LinkedBlockingQueue<ClientThread> getClients(){
         return clients;
     }
 
@@ -37,10 +39,17 @@ public abstract class Server extends Logger implements Runnable{
      * Send a message to all connected clients.
      * @param message Message.
      */
-    public void broadcast(String message){
+    public void broadcast(Object message){
         for(ClientThread c: clients){
             c.send(message);
         }
+    }
+
+    /**
+     * Stop the server from running.
+     */
+    public void stop(){
+        running = false;
     }
 
     /**
@@ -49,10 +58,10 @@ public abstract class Server extends Logger implements Runnable{
      */
     public Server(int port){
         this.port = port;
-        clients = new LinkedList<>();
+        clients = new LinkedBlockingQueue<>();
         new Thread(this).start();
     }
-
+    
     /**
      * Listen for messages, send events to clients.
      */
@@ -75,15 +84,16 @@ public abstract class Server extends Logger implements Runnable{
                 if(client.isRunning()) {
                     clients.add(client);
                     onClientConnect(client);
-                    new Thread(client).start();
                 }
 
-            }catch(IOException ex){
+            } catch(IOException | NullPointerException ex){
                 elog("Server: Server socket error on client connect");
                 elog(ex.toString());
                 onStop();
             }
 
         }while(running);
+
+        onStop();
     }
 }

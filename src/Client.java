@@ -51,7 +51,7 @@ public abstract class Client implements Runnable{
 
         }catch(IOException ex){
             System.err.println("Client: Failed to connect to server.");
-            System.exit(0);
+            //System.exit(0); removed for testing
         }
     }
 
@@ -63,10 +63,26 @@ public abstract class Client implements Runnable{
         try {
             output.writeObject(obj);
             output.flush();
-        }catch(IOException ex){
-            System.err.println("Client: Disconnected from server.");
+        }catch(IOException | NullPointerException ex){
+            System.err.println("Client: Socket closed unexpectedly.");
+            running = false;
             onDisconnect();
         }
+    }
+
+    /**
+     * Disconnect client from server.
+     */
+    public void disconnect(){
+        try {
+
+            socket.close();
+        }catch(IOException ex){
+
+        }
+
+        running = false;
+        onDisconnect();
     }
 
     /**
@@ -79,7 +95,7 @@ public abstract class Client implements Runnable{
                 Object obj = input.readObject();
                 onMessageReceived(obj);
             }catch(Exception ex){
-                System.err.println("Client: Disconnected from server.");
+                running = false;
                 onDisconnect();
             }
         }while(running);

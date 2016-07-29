@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
-public class TestClient extends Client {
+public class ChatClient extends Client {
 
-    public TestClient(String name, String address, int port) {
+    public ChatClient(String name, String address, int port) {
         super(name, address, port);
         Scanner sc = new Scanner(System.in);
 
@@ -36,6 +36,6 @@ public class TestClient extends Client {
      * @param args
      */
     public static void main(String[] args){
-        new TestClient(args[0], args[1], Integer.parseInt(args[2]));
+        new ChatClient(args[0], args[1], Integer.parseInt(args[2]));
     }
 }

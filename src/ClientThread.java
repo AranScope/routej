@@ -25,23 +25,34 @@ public class ClientThread extends Logger implements Runnable {
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
             name = (String) input.readObject();
+            new Thread(this).start();
         } catch (Exception ex) {
             ex.printStackTrace();
             elog("ClientThread: Could not retrieve input stream from socket.");
-            server.onClientDisconnect(this);
             running = false;
         }
     }
 
-    //trx
+    /**
+     * Check if the current thread is running.
+     * @return Whether the current thread is running.
+     */
     public boolean isRunning(){
         return running;
     }
 
+    /**
+     * Get the address of the connected client.
+     * @return The address of the connected client.
+     */
     public String getAddress(){
         return socket.getInetAddress().toString();
     }
 
+    /**
+     * Get the name of the connected client.
+     * @return The name of the connected client.
+     */
     public String getName(){
         return name;
     }
@@ -53,35 +64,49 @@ public class ClientThread extends Logger implements Runnable {
             if(inputObject != null){
                 server.onMessageReceived(this, inputObject);
             }
+            else{
+                running = false;
+                server.onClientDisconnect(this);
+            }
         }
     }
 
+    /**
+     * Send a message to the client.
+     * @param obj The message object.
+     */
     public void send(Object obj){
         try {
             output.writeObject(obj);
             output.flush();
-        }catch(IOException ex){
-            server.getClients().remove(this);
-            server.onClientDisconnect(this);
+        }catch(IOException | ArrayIndexOutOfBoundsException ex){
             running = false;
         }
     }
 
+    /**
+     * Retrieve a message from the client.
+     * @return Message from the client.
+     */
     private Object read(){
         Object inputObject = null;
 
         try{
             inputObject = input.readObject();
         }catch(Exception ex){
-            server.onClientDisconnect(this);
             running = false;
         }
 
         return inputObject;
     }
 
+    /**
+     * Equals method.
+     * @param o
+     * @return Object equality as unique client threads are equal.
+     */
     @Override
     public boolean equals(Object o){
-        return false;
+        return o == this;
     }
 }
